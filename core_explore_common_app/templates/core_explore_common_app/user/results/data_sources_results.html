@@ -12,8 +12,9 @@
                    {% elif BOOTSTRAP_VERSION|first == "5"  %}data-bs-toggle="tab"
                    {% endif %}
                 >
-                    From {{ data_source.name }}
+                    <span class="tab-source-label">From {{ data_source.name }}</span>
                     <span class="badge {% if BOOTSTRAP_VERSION|first == "4" %}badge-secondary{% elif BOOTSTRAP_VERSION|first == "5" %}bg-secondary{% endif %}" id="results_infos_{{forloop.counter0}}">-</span>
+                    <span class="tab-records-label">Records</span>
                 </a>
             </li>
             {% endfor %}
@@ -29,15 +30,21 @@
                     {% elif sorting_display_type == 'multi' %}
                         {% include "core_explore_common_app/user/ordering_menu/multi_criteria_sorting_menu.html" %}
                     {% endif %}
-                    {% include "core_explore_common_app/user/persistent_query/button.html" %}
+                    <!--{% include "core_explore_common_app/user/persistent_query/button.html" %}-->
                     {% if linked_records_app %}
                         {% include 'core_linked_records_app/user/sharing/explore/button.html' %}
                     {% endif %}
-                    {% if exporter_app %}
+                    <!--{% if exporter_app %}
                         <button type="button" class="result-toolbar-button export-button">
                             {% include "core_exporters_app/user/exporters/list/link_exporters_selector.html" %}
                         </button>
-                    {% endif %}
+                    {% endif %}-->
+                    <button type="button" class="result-toolbar-button select-all-toggle-button">
+                        <i class="fas fa-check-square"></i> Select All
+                    </button>
+                    <button type="button" class="result-toolbar-button download-excel-button">
+                        <i class="fas fa-download"></i> Download
+                    </button>
                     <div id="date-toggle" class="toggle-container">
                         <label class="switch">
                             <input type="checkbox" class="switch-input" />

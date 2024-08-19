@@ -66,6 +66,9 @@ def build_local_query(query_data):
     # update the criteria with visibility information
     if options is not None and VISIBILITY_OPTION in options:
         query_builder.add_visibility_criteria(options[VISIBILITY_OPTION])
+    # update the criteria with workspace information
+    if options is not None and options.get("workspaces"):
+        query_builder.add_list_criteria("workspace", options["workspaces"])
     # update the criteria with title information
     if title is not None:
         query_builder.add_title_criteria(title)

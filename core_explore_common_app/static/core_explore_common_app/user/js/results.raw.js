@@ -4,5 +4,7 @@ var displayPersistentQueryButton = '{{display_persistent_query_button}}';
 var defaultDataSortingFields = '{{data.default_data_sorting_fields}}';
 var defaultDateToggleValue = '{{data.default_date_toggle_value}}'
 var editRecordUrl = "{% url 'core_dashboard_edit_record' %}";
+var dataDetailUrl = "{% url 'core_main_app_data_detail' %}";
+var loadRecordUrl = "{% url 'core_main_app_rest_data_load' 'pk' %}";
 var openXMLRecordUrl = "{% url 'core_main_app_xml_text_editor_view' %}";
 var openJSONRecordUrl = "{% url 'core_main_app_json_text_editor_view' %}";

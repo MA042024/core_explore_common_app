@@ -28,7 +28,7 @@ span.expand {
 }
 
 .result-title:hover {
-    color: #37c0fb;
+    color: #287371;
 }
 
 .tab-selector td {
@@ -56,6 +56,10 @@ span.expand {
 
 .result-toolbar-button:hover {
   background-color: #cacaca;
+}
+
+.result-toolbar-button:disabled {
+  opacity: 0.5;
 }
 
 .filter-left-padding {
@@ -114,13 +118,18 @@ span.expand {
 
 .permissions-link, .permissions-link-open {
     float: right;
-    display: none;
+    visibility: hidden;
 }
 
 .permissions-icon {
-    font-size: 20px;
-    color: #007aa7;
+    font-size: 15px;
+    /*color: #007aa7;*/
+    color: #3CACA8;
     cursor: pointer;
+}
+
+.permissions-icon:hover {
+	 color: #287371;
 }
 
 .data-info-right-container {

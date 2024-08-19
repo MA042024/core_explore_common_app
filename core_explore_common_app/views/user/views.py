@@ -74,26 +74,39 @@ class ResultsView(View):
                     "path": f"core_explore_common_app/user/js/sorting_{settings.SORTING_DISPLAY_TYPE}_criteria.js",
                     "is_raw": False,
                 },
+                {
+                    "path": f"core_explore_common_app/user/js/downloadalldata.js",
+                    "is_raw": False,
+                },
+                {
+                    "path": "core_main_app/common/js/wait/waiting.js",
+                    "is_raw": False,
+                },
+                {
+                    "path": "core_main_app/common/js/tooltip.js",
+                    "is_raw": False,
+                },
             ],
             "css": [
                 "core_main_app/common/css/XMLTree.css",
                 "core_explore_common_app/user/css/query_result.css",
                 "core_explore_common_app/user/css/results.css",
                 "core_explore_common_app/user/css/toggle.css",
+                "core_main_app/common/css/wait/waiting.css"
             ],
         }
 
-        # Add assets needed for the exporters
-        if "core_exporters_app" in settings.INSTALLED_APPS:
-            # add all assets needed
-            assets["js"].extend(
-                [
-                    {
-                        "path": "core_exporters_app/user/js/exporters/list/modals/list_exporters_selector.js",
-                        "is_raw": False,
-                    }
-                ]
-            )
+        # Exporters button is disabled on this page (Excel-only download instead),
+        # so its JS is no longer loaded here.
+        # if "core_exporters_app" in settings.INSTALLED_APPS:
+        #     assets["js"].extend(
+        #         [
+        #             {
+        #                 "path": "core_exporters_app/user/js/exporters/list/modals/list_exporters_selector.js",
+        #                 "is_raw": False,
+        #             }
+        #         ]
+        #     )
 
         # Add assets needed for the file preview
         if "core_file_preview_app" in settings.INSTALLED_APPS:
@@ -131,15 +144,16 @@ class ResultsView(View):
         modals = [
             "core_main_app/common/modals/error_page_modal.html",
             "core_explore_common_app/user/persistent_query/modal.html",
+            "core_explore_common_app/user/modals/download_excel_confirm.html",
         ]
 
-        # Add the exporters modal
-        if "core_exporters_app" in settings.INSTALLED_APPS:
-            modals.extend(
-                [
-                    "core_exporters_app/user/exporters/list/modals/list_exporters_selector.html"
-                ]
-            )
+        # Exporters button/modal is disabled on this page (Excel-only download instead).
+        # if "core_exporters_app" in settings.INSTALLED_APPS:
+        #     modals.extend(
+        #         [
+        #             "core_exporters_app/user/exporters/list/modals/list_exporters_selector.html"
+        #         ]
+        #     )
 
         # Add the file preview modal
         if "core_file_preview_app" in settings.INSTALLED_APPS:

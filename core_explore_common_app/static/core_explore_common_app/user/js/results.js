@@ -69,10 +69,15 @@ var get_data_source_results = function(result_page, data_source_url) {
             var nb_results_id = result_page.attr('nb_results_id');
             $("#" + nb_results_id).html(data.nb_results);
             result_page.html(data.results);
+            // re-apply the Excel download selection state (Select All / individually selected rows)
+            // so it survives moving between pages
+            if (typeof applyExcelSelectionState === "function") applyExcelSelectionState(result_page);
             // display the date
             initDisplayDateToggle();
             // permission api calls for the edit button
             getDataPermission();
+            // re-init tooltips (e.g. edit icon) for the newly-loaded rows
+            $('[data-bs-toggle="tooltip"], [data-toggle="tooltip"]').tooltip();
             // format and highlight data content
             $('.highlight-content code').each(function(i, block) {
                 if ($(".data-template-format").val() == "JSON"){
@@ -109,7 +114,7 @@ var getDataPermission = function() {
                     if (data[id]) {
                         // show the edit icon
                         var editLinkElement = inputElement.siblings(".permissions-link");
-                        editLinkElement.css('display', "inline");
+                        editLinkElement.css('visibility', "visible");
                         // create the click event listener
                             (function () {
                                 var target_id = id;
@@ -120,7 +125,7 @@ var getDataPermission = function() {
                         // show the open icon
                         var openLinkElement = inputElement.siblings(".permissions-link-open");
                         var dataFormat = inputElement.siblings(".data-template-format").val();
-                        openLinkElement.css('display', "inline");
+                        openLinkElement.css('visibility', "visible");
                         // add link to text editor
                         if(dataFormat == "XSD") openLinkElement.attr("href", openXMLRecordUrl + '?id=' + id);
                         else if (dataFormat == "JSON") openLinkElement.attr("href", openJSONRecordUrl + '?id=' + id);
@@ -164,6 +169,40 @@ openEditRecord = function(id, btnSelector) {
         hideSpinner(btnSelector.find("i"), icon)
     });
 };
+
+
+/*
+ * Navigate straight to the form (GVForm) when clicking a result title,
+ * skipping the intermediate record detail page. Only intercepts links
+ * pointing at the plain record detail page; PID / external links (handled
+ * by leaveNotice) are left untouched.
+ * @param event
+ */
+var openViewRecordFromResults = function(event) {
+    var href = $(this).attr('href');
+    if (!href || href.indexOf(dataDetailUrl) !== 0) {
+        return;
+    }
+    event.preventDefault();
+    var objectID = href.split('id=')[1];
+    $.ajax({
+        url: loadRecordUrl.replace('pk', objectID),
+        type: 'POST',
+        contentType: 'application/json',
+        success: function(response) {
+            sessionStorage.setItem('data_content', JSON.stringify(response.data_content));
+            sessionStorage.setItem('data_title', response.data_title);
+            sessionStorage.setItem('test_id', response.test_id);
+            window.location = '/gvform';
+        },
+        error: function(data) {
+            var jsonResponse = JSON.parse(data.responseText);
+            $.notify(jsonResponse.error, "danger");
+        }
+    });
+};
+
+$(document).on('click', '.result-title a', openViewRecordFromResults);
 
 
 /*
@@ -245,6 +284,9 @@ var initToolbarComponents = function(){
     initTabStateListener();
     // enable the tool-bar buttons after the end of the toolbar initialization
     $(".result-toolbar-button").attr("disabled", false);
+    // re-apply the Excel download button's own enabled/disabled state, since the
+    // line above would otherwise force it enabled even with nothing selected
+    if (typeof updateExcelDownloadButtonsLabel === "function") updateExcelDownloadButtonsLabel();
 };
 
 /**

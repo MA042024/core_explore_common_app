@@ -1,0 +1,13 @@
+{% extends 'core_main_app/_render/admin/theme/tools/modal.html' %}
+
+{% block modal_id %}download-excel-confirm-modal{% endblock %}
+{% block modal_title %}Download Excel{% endblock %}
+
+{% block modal_body %}
+<p>This will download the selected records as an AsphaltMine Excel sheet. Depending on the number of records, this may take some time.</p>
+{% endblock %}
+
+{% block modal_footer %}
+<button class="btn btn-secondary" {% if BOOTSTRAP_VERSION|first == "4" %}data-dismiss{% elif BOOTSTRAP_VERSION|first == "5"  %}data-bs-dismiss{% endif %}="modal"><i class="fas fa-times"></i> Cancel</button>
+<button id="download-excel-confirm-yes" class="btn btn-primary"><i class="fas fa-download"></i> Download</button>
+{% endblock %}

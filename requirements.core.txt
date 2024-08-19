@@ -1,1 +1,1 @@
-core-main-app==2.9.*
+core-main-app @ git+https://github.com/Moha-Abbas/AM_core_main_app.git
